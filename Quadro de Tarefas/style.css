@@ -1,0 +1,215 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+main {
+    padding: 30px;
+    user-select: none;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header > span {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #6b778c;
+    letter-spacing: 0.02rem;
+}
+
+header > h1 {
+    color: #182b4d;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.buttonAdd {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    align-self: flex-start;
+}
+
+.addTaskButton {
+    color: #182b4d;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background-color: white;
+    border: 2px solid #182b4d;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.addTaskButton:hover {
+    background-color: #182b4d;
+    color: white;
+}
+
+.columns {
+    display: flex;
+    gap: 15px;
+    margin-top: 50px;
+}
+
+.column {
+    width: 100%;
+    background-color: #f4f5f7;
+    height: 100vh;
+    border-radius: 8px;
+}
+
+.column__title {
+    color: #4d5c76;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 20px;
+}
+
+.column__card {
+    padding: 4px;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.card {
+    position: relative;
+    width: 100%;
+    min-height: 70px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #dfe1e6;
+    box-shadow: 0 2px 2px #dfe1e6;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4d5c76;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card__text {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 4px; /* Adicionado padding */
+}
+
+.card__actions {
+    cursor: pointer;
+}
+
+.card__menu {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card__menu-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.card__menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+.column--highlight {
+    background-color: #deebff;
+    border: 2px solid #2482ff;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    main {
+        padding: 15px;
+    }
+
+    header {
+        align-items: center;
+    }
+
+    header > h1 {
+        font-size: 1.5rem;
+    }
+
+    .buttonAdd {
+        align-self: center;
+    }
+
+    .columns {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .column {
+        height: auto;
+        padding: 15px; /* Aumenta o padding das colunas no mobile */
+    }
+
+    .column__title {
+        font-size: 1rem;
+        margin: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 10px;
+    }
+
+    header {
+        align-items: center;
+    }
+
+    header > span {
+        font-size: 0.8rem;
+    }
+
+    header > h1 {
+        font-size: 1.5rem;
+    }
+
+    .buttonAdd {
+        align-self: center;
+    }
+
+    .columns {
+        gap: 5px;
+    }
+
+    .column {
+        padding: 20px; /* Aumenta o padding das colunas no mobile */
+    }
+
+    .column__title {
+        font-size: 0.85rem;
+        margin: 10px;
+    }
+
+    .card {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+}
