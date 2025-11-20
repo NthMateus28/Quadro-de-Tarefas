@@ -62,6 +62,11 @@ const createCard = (target) => {
         menu.style.display = menu.style.display === "block" ? "none" : "block";
     });
 
+    // Impedir de fechar ao clicar dentro do menu
+    card.querySelector(".card__menu").addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
+
     card.querySelector(".card__menu-item:nth-child(1)").addEventListener(
         "click",
         () => {
@@ -161,12 +166,22 @@ function loadBoard() {
                 </div>
             `;
 
+            // Aplicar prioridade carregada (CORREÇÃO DO UNDEFINED)
+            if (priority === "alta") card.classList.add("prioridade-alta");
+            if (priority === "media") card.classList.add("prioridade-media");
+            if (priority === "baixa") card.classList.add("prioridade-baixa");
+
             // Eventos do card
             card.addEventListener("dragstart", dragStart);
             card.querySelector(".card__actions").addEventListener("click", (event) => {
                 event.stopPropagation();
                 const menu = card.querySelector(".card__menu");
                 menu.style.display = menu.style.display === "block" ? "none" : "block";
+            });
+
+            // Impedir fechar ao clicar dentro do menu
+            card.querySelector(".card__menu").addEventListener("click", (e) => {
+                e.stopPropagation();
             });
 
             card.querySelector(".card__menu-item:nth-child(1)").addEventListener(
@@ -196,6 +211,7 @@ function loadBoard() {
 
             column.append(card);
         });
+
         sortColumn(column);
     });
 }
@@ -227,6 +243,11 @@ function sortColumn(column) {
     cards.forEach(card => column.append(card));
 }
 
-
+// FECHAR MENU AO CLICAR FORA (AJUSTE FINAL)
+document.addEventListener("click", () => {
+    document.querySelectorAll(".card__menu").forEach(menu => {
+        menu.style.display = "none";
+    });
+});
 
 loadBoard();
