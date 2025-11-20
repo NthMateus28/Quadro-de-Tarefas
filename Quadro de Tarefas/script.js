@@ -42,6 +42,7 @@ const createCard = (target) => {
         <div class="card__menu">
             <div class="card__menu-item">Editar</div>
             <div class="card__menu-item">Excluir</div>
+            <div class="card__menu-item">Prioridade</div>
         </div>
     `;
 
@@ -76,6 +77,13 @@ const createCard = (target) => {
             saveBoard();
         }
     );
+
+    card.querySelector(".card__menu-item:nth-child(3)").addEventListener(
+        "click",
+        () => {
+            setPriority(card);
+        }
+    );    
 
     target.append(card);
     cardText.focus();
@@ -116,7 +124,13 @@ function saveBoard() {
 
     columns.forEach((column, index) => {
         const cards = [...column.querySelectorAll(".card")].map(card => {
-            return card.querySelector(".card__text").textContent.trim();
+            return {
+                text: card.querySelector(".card__text").textContent.trim(),
+                priority:
+                    card.classList.contains("prioridade-alta") ? "alta" :
+                    card.classList.contains("prioridade-media") ? "media" :
+                    "baixa"
+            };            
         });
 
         boardData[index] = cards;
@@ -131,7 +145,8 @@ function loadBoard() {
 
     data.forEach((cards, index) => {
         const column = columns[index];
-        cards.forEach(text => {
+        cards.forEach(cardData => {
+            const { text, priority } = cardData;        
             const card = document.createElement("section");
             card.className = "card";
             card.draggable = "true";
@@ -142,6 +157,7 @@ function loadBoard() {
                 <div class="card__menu">
                     <div class="card__menu-item">Editar</div>
                     <div class="card__menu-item">Excluir</div>
+                    <div class="card__menu-item">Prioridade</div>
                 </div>
             `;
 
@@ -170,9 +186,47 @@ function loadBoard() {
                 }
             );
 
+            card.querySelector(".card__menu-item:nth-child(3)").addEventListener(
+                "click",
+                () => {
+                    setPriority(card);
+                }
+            );
+            
+
             column.append(card);
         });
+        sortColumn(column);
     });
 }
+
+function setPriority(card) {
+    const level = prompt("Escolha a prioridade: alta, media ou baixa").toLowerCase();
+
+    card.classList.remove("prioridade-alta", "prioridade-media", "prioridade-baixa");
+
+    if (level === "alta") card.classList.add("prioridade-alta");
+    else if (level === "media") card.classList.add("prioridade-media");
+    else if (level === "baixa") card.classList.add("prioridade-baixa");
+
+    saveBoard();
+    sortColumn(card.parentElement);
+}
+
+function sortColumn(column) {
+    const cards = [...column.querySelectorAll(".card")];
+
+    const priorityValue = card => {
+        if (card.classList.contains("prioridade-alta")) return 1;
+        if (card.classList.contains("prioridade-media")) return 2;
+        return 3; // baixa
+    };
+
+    cards.sort((a, b) => priorityValue(a) - priorityValue(b));
+
+    cards.forEach(card => column.append(card));
+}
+
+
 
 loadBoard();
