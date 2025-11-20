@@ -27,6 +27,7 @@ const drop = ({ target }) => {
         target.classList.remove("column--highlight");
         target.append(draggedCard);
     }
+    saveBoard();
 };
 
 const createCard = (target) => {
@@ -49,6 +50,7 @@ const createCard = (target) => {
     cardText.addEventListener("focusout", () => {
         cardText.contentEditable = "false";
         if (!cardText.textContent.trim()) card.remove();
+        saveBoard();
     });
 
     card.addEventListener("dragstart", dragStart);
@@ -71,6 +73,7 @@ const createCard = (target) => {
         "click",
         () => {
             card.remove();
+            saveBoard();
         }
     );
 
@@ -81,6 +84,7 @@ const createCard = (target) => {
 addTaskButton.addEventListener("click", () => {
     const firstColumn = document.querySelector(".column__card");
     createCard(firstColumn);
+    saveBoard();
 });
 
 columns.forEach((column) => {
@@ -106,3 +110,69 @@ columns.forEach((column) => {
         }
     });
 });
+
+function saveBoard() {
+    const boardData = [];
+
+    columns.forEach((column, index) => {
+        const cards = [...column.querySelectorAll(".card")].map(card => {
+            return card.querySelector(".card__text").textContent.trim();
+        });
+
+        boardData[index] = cards;
+    });
+
+    localStorage.setItem("kanbanBoard", JSON.stringify(boardData));
+}
+
+function loadBoard() {
+    const data = JSON.parse(localStorage.getItem("kanbanBoard"));
+    if (!data) return;
+
+    data.forEach((cards, index) => {
+        const column = columns[index];
+        cards.forEach(text => {
+            const card = document.createElement("section");
+            card.className = "card";
+            card.draggable = "true";
+
+            card.innerHTML = `
+                <div class="card__text" contentEditable="false">${text}</div>
+                <span class="card__actions">⋮</span>
+                <div class="card__menu">
+                    <div class="card__menu-item">Editar</div>
+                    <div class="card__menu-item">Excluir</div>
+                </div>
+            `;
+
+            // Eventos do card
+            card.addEventListener("dragstart", dragStart);
+            card.querySelector(".card__actions").addEventListener("click", (event) => {
+                event.stopPropagation();
+                const menu = card.querySelector(".card__menu");
+                menu.style.display = menu.style.display === "block" ? "none" : "block";
+            });
+
+            card.querySelector(".card__menu-item:nth-child(1)").addEventListener(
+                "click",
+                () => {
+                    const cardText = card.querySelector(".card__text");
+                    cardText.contentEditable = "true";
+                    cardText.focus();
+                }
+            );
+
+            card.querySelector(".card__menu-item:nth-child(2)").addEventListener(
+                "click",
+                () => {
+                    card.remove();
+                    saveBoard();
+                }
+            );
+
+            column.append(card);
+        });
+    });
+}
+
+loadBoard();
