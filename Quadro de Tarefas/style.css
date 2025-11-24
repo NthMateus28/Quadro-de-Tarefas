@@ -89,6 +89,8 @@ header > h1 {
 
 .card {
     position: relative;
+    z-index: 1;
+    overflow: visible !important;
     width: 100%;
     min-height: 70px;
     background-color: #fff;
@@ -105,10 +107,15 @@ header > h1 {
     align-items: center;
 }
 
+/* ⬇⬇⬇ Novo: quando o menu abre, este card sobe acima dos outros */
+.card.menu-open {
+    z-index: 9999 !important;
+}
+
 .card__text {
     flex-grow: 1;
     margin-right: 10px;
-    padding: 4px; /* Adicionado padding */
+    padding: 4px;
 }
 
 .card__actions {
@@ -124,6 +131,9 @@ header > h1 {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    /* ⬇⬇⬇ Novo: menu sempre fica acima de tudo */
+    z-index: 10000 !important;
 }
 
 .card__menu-item {
@@ -165,7 +175,7 @@ header > h1 {
 
     .column {
         height: auto;
-        padding: 15px; /* Aumenta o padding das colunas no mobile */
+        padding: 15px;
     }
 
     .column__title {
@@ -186,6 +196,39 @@ header > h1 {
     border-left: 6px solid #2ecc71;
 }
 
+/* Submenu */
+.prioridade-btn {
+    position: relative;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    padding: 5px 0;
+    z-index: 10000;
+    width: 120px;
+}
+
+.prioridade-btn:hover .submenu {
+    display: block;
+}
+
+.submenu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prioridade-alta { border-left: 6px solid #e74c3c; }
+.prioridade-media { border-left: 6px solid #f1c40f; }
+.prioridade-baixa { border-left: 6px solid #2ecc71; }
 
 @media (max-width: 480px) {
     main {
@@ -213,7 +256,7 @@ header > h1 {
     }
 
     .column {
-        padding: 20px; /* Aumenta o padding das colunas no mobile */
+        padding: 20px;
     }
 
     .column__title {
